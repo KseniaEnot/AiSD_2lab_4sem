@@ -51,9 +51,11 @@ public:
 		for (int i = 0; str[i] != '\n'; i++)
 			chars[str[i]+128]++;
 		int countLetter = 0;
+		cout << "Frequency table: " << endl;
 		for (int i = 0; i < 256; i++)
 			if (chars[i] != 0) {
 				countLetter++;
+				cout << (char)(i - 128) << " : " << chars[i] << endl;
 				bufNode_1 = new Node(chars[i], nullptr, nullptr, (i-128));
 				PQ.push(bufNode_1, chars[i]);
 			}
@@ -86,6 +88,7 @@ public:
 		}
 		bufNode_1 = root;
 		strArr* bufStrArr = new strArr;
+		cout << "Code table: " << endl;
 		while (!dft.isEmpty())
 		{
 			while (bufNode_1->left != nullptr)
@@ -103,6 +106,12 @@ public:
 			bufStrArr = new strArr;
 			bufStrArr->size = indexStr;
 			bufStrArr->str = copyStr;
+			cout << bufNode_1->letter << " : ";
+			for (size_t i = 0; i < indexStr; i++)
+			{
+				cout << copyStr[i];
+			}
+			cout << endl;
 			codeLetter.insert(bufNode_1->letter, bufStrArr);//проверяем верхушку стека и родителя того где находимся
 			indexStr--;
 			while ((bufNode_1->parent != nullptr) && (bufNode_1->parent->right != dft.get_last()))
