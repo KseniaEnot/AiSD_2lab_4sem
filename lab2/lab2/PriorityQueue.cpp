@@ -14,7 +14,7 @@ void PriorityQueue<T>::push(T add,int prior) // add item to end
 	{
 		Node* newNod = new Node(add, prior);
 		Node* cur = head;
-		while ((newNod->priority < cur->priority)&&(cur->next != NULL))
+		while ((newNod->priority < cur->priority)&&(cur->next != NULL)) //top priority in the head
 		{
 			cur = cur->next;
 		}
@@ -72,8 +72,8 @@ T PriorityQueue<T>::pop() // delete first item
 }
 
 template <class T>
-int PriorityQueue<T>::head_priority() {
-	return head->priority;
+int PriorityQueue<T>::tail_priority() {
+	return tail->priority;
 }
 
 template <class T>

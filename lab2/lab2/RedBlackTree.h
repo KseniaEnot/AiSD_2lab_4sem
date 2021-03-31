@@ -161,6 +161,7 @@ private:
 		Node* brother;
 		while ((node != root) && (node->color == false))
 		{
+			//if (node == node->parent->left) //if node = left child
 			if (node == node->parent->left) //if node = left child
 			{
 				brother = node->parent->right;
@@ -170,7 +171,8 @@ private:
 					node->parent->color = true; //swap parent and brother color 
 					LeftRotation(node->parent);
 					brother = node->parent->right;
-				}if ((brother->left->color == false) && (brother->right->color == false)) //both brother child black
+				}
+				if ((brother->left->color == false) && (brother->right->color == false)) //both brother child black
 				{
 					brother->color = true;
 					node = node->parent;
@@ -189,7 +191,6 @@ private:
 					LeftRotation(node->parent);
 					node = root;
 				}
-				
 			}
 			else {  //as in the previous if, but in the other direction
 				brother = node->parent->left;
@@ -219,7 +220,6 @@ private:
 					RightRotation(node->parent);
 					node = root;
 				}
-				
 			}
 		}
 		node->color = false; //root color
@@ -268,6 +268,17 @@ public:
 				node = node->right;
 			else
 				node = node->left;
+		}
+		if ((node->left==nil) && (node->right==nil))
+		{
+			if (node == root)
+				root = nil;
+			else
+				if (node == node->parent->left)
+					node->parent->left = nil;
+				else
+					node->parent->right = nil;
+			return;
 		}
 		if ((node->left == nil) || (node->right == nil))
 			nodeA = node;

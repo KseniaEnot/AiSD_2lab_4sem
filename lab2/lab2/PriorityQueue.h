@@ -37,7 +37,7 @@ public:
     void push(T, int); // add item to end
     size_t get_size(); // get list size
     T pop(); // delete first item
-    int head_priority();
+    int tail_priority();
     void clear(); // clear list
     bool isEmpty(); // test for emptiness
     ~PriorityQueue()

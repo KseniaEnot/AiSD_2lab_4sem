@@ -1,7 +1,10 @@
 ﻿  lab2.cpp
 C:\Users\Ксения\Documents\универ дз\4 сем\AiSD\AiSD_2lab_4sem\lab2\lab2\HuffmanAlg.h(26,24): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\Ксения\Documents\универ дз\4 сем\AiSD\AiSD_2lab_4sem\lab2\lab2\HuffmanAlg.h(65,25): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\Ксения\Documents\универ дз\4 сем\AiSD\AiSD_2lab_4sem\lab2\lab2\HuffmanAlg.h(149,24): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\Ксения\Documents\универ дз\4 сем\AiSD\AiSD_2lab_4sem\lab2\lab2\lab2.cpp(25,26): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\Ксения\Documents\универ дз\4 сем\AiSD\AiSD_2lab_4sem\lab2\lab2\lab2.cpp(31,26): warning C4018: <: несоответствие типов со знаком и без знака
-  lab2.vcxproj -> C:\Users\Ксения\Documents\универ дз\4 сем\AiSD\AiSD_2lab_4sem\lab2\Debug\lab2.exe
+C:\Users\Ксения\Documents\универ дз\4 сем\AiSD\AiSD_2lab_4sem\lab2\lab2\HuffmanAlg.h(71,26): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\Ксения\Documents\универ дз\4 сем\AiSD\AiSD_2lab_4sem\lab2\lab2\HuffmanAlg.h(170,24): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\Ксения\Documents\универ дз\4 сем\AiSD\AiSD_2lab_4sem\lab2\lab2\lab2.cpp(23,26): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\Ксения\Documents\универ дз\4 сем\AiSD\AiSD_2lab_4sem\lab2\lab2\lab2.cpp(30,26): warning C4018: <: несоответствие типов со знаком и без знака
+  PriorityQueue.cpp
+  Stack.cpp
+  Создание кода...
+  lab2.vcxproj -> C:\Users\Ксения\Documents\универ дз\4 сем\AiSD\AiSD_2lab_4sem\lab2\Debug\lab2.lib

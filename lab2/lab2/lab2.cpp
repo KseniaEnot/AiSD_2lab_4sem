@@ -3,7 +3,6 @@
 
 int main()
 {
-
     int sizeInStr = 500;
     char* str = new char[sizeInStr];
     int size;
@@ -16,7 +15,7 @@ int main()
         size++;
     } while ((c!='.')&&((size+1) < sizeInStr));
     str[size] = '\n';
-    cout << "Initial memory size : " << sizeof(char) * size << endl;
+    double coeff = 1.0*sizeof(char) * size * 8;
     HuffmanAlg ForCode(str);
     int sizeC;
     bool* code = ForCode.Code(size);
@@ -26,7 +25,8 @@ int main()
         cout << code[i];
     }
     cout << endl;
-    cout << "After compression : " << sizeof(bool) * size << endl;
+    coeff = coeff / (1 * size);
+    cout << "Coefficient : " << coeff << endl;
     for (size_t i = 0; i < sizeC; i++)
     {
         cout << decode[i];

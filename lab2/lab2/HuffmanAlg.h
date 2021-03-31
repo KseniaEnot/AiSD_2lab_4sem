@@ -4,7 +4,7 @@
 #include "Stack.h"
 class HuffmanAlg
 {
-private: //K- вес дерева (кол-во повторений символов),V - дерево
+private: 
 	class Node
 	{
 	public:
@@ -39,101 +39,122 @@ private: //K- вес дерева (кол-во повторений символов),V - дерево
 	RedBlackTree<char, strArr*> codeLetter;
 public:
 	HuffmanAlg(char* _str){
-		codeLetter = RedBlackTree<char, strArr*>();
-		str = _str;
-		sizeStr = 0;
+		if (_str == NULL)
+		{
+			throw "null argument";
+		}
+		codeLetter = RedBlackTree<char, strArr*>(); //map for saving symbols and codes
+		str = _str; //original string to code
+		sizeStr = 0;  //line size
 		for (size_t i = 0; str[i]!='\n'; i++)
 			sizeStr++;
-		PriorityQueue<Node*> PQ;
-		Node* bufNode_1;
-		Node* bufNode_2;
-		int chars[256] = { 0 };
-		for (int i = 0; str[i] != '\n'; i++)
-			chars[str[i]+128]++;
-		int countLetter = 0;
-		cout << "Frequency table: " << endl;
-		for (int i = 0; i < 256; i++)
-			if (chars[i] != 0) {
-				countLetter++;
-				cout << (char)(i - 128) << " : " << chars[i] << endl;
-				bufNode_1 = new Node(chars[i], nullptr, nullptr, (i-128));
-				PQ.push(bufNode_1, chars[i]);
-			}
-		int bufInt;
-		bufInt = PQ.head_priority();
-		bufNode_1 = PQ.pop();
-		for (size_t i = 0; (i < countLetter) && (!PQ.isEmpty()); i++)
+		if (sizeStr > 1)
 		{
-			bufInt += PQ.head_priority();
-			bufNode_2 = PQ.pop();
-			root = new Node(bufInt, bufNode_1, bufNode_2);
-			bufNode_1->parent = root;
-			bufNode_2->parent = root;
-			PQ.push(root, root->frequence);
-			if (!PQ.isEmpty())
+			PriorityQueue<Node*> PQ;
+			Node* bufNode_1;
+			Node* bufNode_2;
+			int chars[256] = { 0 };
+			for (int i = 0; str[i] != '\n'; i++)  //count the number letters with repeat
+				chars[str[i] + 128]++;
+			int countLetter = 0;
+			cout << "Frequency table: " << endl;
+			for (int i = 0; i < 256; i++)
+				if (chars[i] != 0) {
+					countLetter++;
+					cout << (char)(i - 128) << " : " << chars[i] << endl;
+					bufNode_1 = new Node(chars[i], nullptr, nullptr, (i - 128));
+					PQ.push(bufNode_1, chars[i]);
+				}
+			int bufInt;
+			bufInt = PQ.tail_priority();
+			bufNode_1 = PQ.pop();
+			for (size_t i = 0; (i < countLetter) && (!PQ.isEmpty()); i++)
 			{
-				bufInt = PQ.head_priority();
+				bufInt += PQ.tail_priority();
+				bufNode_2 = PQ.pop();
+				root = new Node(bufInt, bufNode_1, bufNode_2); //create a parent node for two with minimum priority
+				bufNode_1->parent = root;
+				bufNode_2->parent = root;
+				PQ.push(root, root->frequence);  //return it to the queue
+				bufInt = PQ.tail_priority();
 				bufNode_1 = PQ.pop();
 			}
-		}
-		bool* bufStr = new bool[countLetter / 2 + 1]; //максимальная высота дерева
-		memset(bufStr, NULL, countLetter / 2 + 1);
-		bool* copyStr = NULL;
-		size_t indexStr = 0;
-		unsigned int bufCodeLetter = 0;
-		Stack<Node*> dft;
-		if (root->right != nullptr)
-		{
-			dft.push(root->right);
-		}
-		bufNode_1 = root;
-		strArr* bufStrArr = new strArr;
-		cout << "Code table: " << endl;
-		while (!dft.isEmpty())
-		{
-			while (bufNode_1->left != nullptr)
+			bool* bufStr = new bool[countLetter / 2 + 1];
+			memset(bufStr, 0, countLetter / 2 + 1);
+			size_t indexStr = 0;
+			unsigned int bufCodeLetter = 0;
+			Stack<Node*> dft;
+			if (root->right != nullptr)
 			{
-				bufStr[indexStr] = 0;
-				indexStr++;
-				bufNode_1 = bufNode_1->left;
+				dft.push(root->right);
+			}
+			bufNode_1 = root;
+			strArr* bufStrArr = new strArr;
+			cout << "Code table: " << endl;
+			while (!dft.isEmpty()) //leaf traversal
+			{
+				while (bufNode_1->left != nullptr)  //go down to the sheet
+				{
+					bufStr[indexStr] = 0;
+					indexStr++;
+					bufNode_1 = bufNode_1->left;
+					if (bufNode_1->right != nullptr) //add the right child to the Stack
+					{
+						dft.push(bufNode_1->right);
+					}
+				}
+				bufStrArr = new strArr;
+				bufStrArr->str = new bool[indexStr];
+				bufStrArr->size = indexStr;
+				copyBoolArray(bufStrArr->str, bufStr, indexStr);
+				cout << bufNode_1->letter << " : ";
+				for (size_t i = 0; i < indexStr; i++)
+				{
+					cout << bufStrArr->str[i];
+				}
+				cout << endl;
+				codeLetter.insert(bufNode_1->letter, bufStrArr);  //Add correspondence between letter and code
+				indexStr--;
+				while ((bufNode_1->parent != nullptr) && (bufNode_1->parent->right != dft.get_last())) //go up
+				{
+					bufNode_1 = bufNode_1->parent;
+					indexStr--;
+				}
+				bufNode_1 = dft.pop();
 				if (bufNode_1->right != nullptr)
 				{
 					dft.push(bufNode_1->right);
 				}
+				bufStr[indexStr] = 1;
+				indexStr++;
 			}
-			copyStr = new bool[indexStr];
-			copyBoolArray(copyStr, bufStr, indexStr);
 			bufStrArr = new strArr;
 			bufStrArr->size = indexStr;
-			bufStrArr->str = copyStr;
+			bufStrArr->str = new bool[indexStr];
+			copyBoolArray(bufStrArr->str, bufStr, indexStr);
 			cout << bufNode_1->letter << " : ";
 			for (size_t i = 0; i < indexStr; i++)
 			{
-				cout << copyStr[i];
+				cout << bufStrArr->str[i];
 			}
 			cout << endl;
-			codeLetter.insert(bufNode_1->letter, bufStrArr);//проверяем верхушку стека и родителя того где находимся
-			indexStr--;
-			while ((bufNode_1->parent != nullptr) && (bufNode_1->parent->right != dft.get_last()))
-			{
-				bufNode_1 = bufNode_1->parent;
-				indexStr--;
-			}
-			bufNode_1 = dft.pop();
-			if (bufNode_1->right != nullptr)
-			{
-				dft.push(bufNode_1->right);
-			}
-			bufStr[indexStr] = 1;
-			indexStr++;
+			codeLetter.insert(bufNode_1->letter, bufStrArr);
+			readyCode = NULL;
+			sizeReadyCode = 0;
+			delete bufStr;
 		}
-		copyStr = new bool[indexStr];
-		copyBoolArray(copyStr, bufStr, indexStr);
-		bufStrArr = new strArr;
-		bufStrArr->size = indexStr;
-		bufStrArr->str = copyStr;
-		codeLetter.insert(bufNode_1->letter, bufStrArr);
-		readyCode = NULL;
+		else {
+			cout << "Frequency table: " <<str[0]<< " " << 1 << endl;
+			cout << "Code table: " << str[0] << " " << 0 << endl;
+			root = new Node(1, nullptr, nullptr, str[0]);
+			sizeReadyCode = 0;
+			readyCode = NULL;
+			strArr* bufStrArr = new strArr;
+			bufStrArr->str = new bool[1];
+			bufStrArr->str[0] = false;
+			bufStrArr->size = 1;
+			codeLetter.insert(str[0], bufStrArr);
+		}
 	}
 	bool* Code(int& codeSize) {
 		bool* copyStr;
@@ -145,7 +166,7 @@ public:
 		readyCode = new bool[codeSize];
 		size_t indexStr=0;
 		for (int i = 0; str[i] != '\n'; i++) {
-			copyStr = codeLetter.find(str[i])->str;
+			copyStr = codeLetter.find(str[i])->str;  //we find a match in the tree
 			for (size_t j = 0; j< codeLetter.find(str[i])->size; j++) {
 				readyCode[indexStr] = copyStr[j];
 				indexStr++;
@@ -154,34 +175,36 @@ public:
 		return readyCode;
 	}
 	char* Decode(int& sizeStrDecode) {
-		char* decodeStr = new char[sizeStr];
+		char* decodeStr = new char[sizeStr+1];
 		sizeStrDecode = sizeStr;
-		if (readyCode != NULL) //ПРВЕРКА ЕСЛИ 1 СИМВОЛ
+		if (sizeStr==1)
 		{
-			size_t indexCode=0;
+			decodeStr[0] = root->letter;
+			decodeStr[0] = '\n';
+		}
+		else {
+			size_t indexCode = 0;
 			Node* curNode = root;
 			size_t indexDecode = 0;
-			while (indexCode< sizeReadyCode)
+			while (indexCode < sizeReadyCode)
 			{
-				if ((readyCode[indexCode]==0)&&(curNode->left!=nullptr))
+				if ((readyCode[indexCode] == 0) && (curNode->left != nullptr))  //go left
 				{
 					curNode = curNode->left;
 					indexCode++;
 				}
-				else if ((readyCode[indexCode] == 1) && (curNode->right != nullptr)) {
+				else if ((readyCode[indexCode] == 1) && (curNode->right != nullptr)) {  //go right
 					curNode = curNode->right;
 					indexCode++;
 				}
-				else {
+				else { //came to the desired node
 					decodeStr[indexDecode] = curNode->letter;
 					indexDecode++;
 					curNode = root;
 				}
 			}
 			decodeStr[indexDecode] = curNode->letter;
-		}
-		else {
-			throw "EXDOMINARTE!";
+			decodeStr[indexDecode+1] = '\n';
 		}
 		return decodeStr;
 	}	
