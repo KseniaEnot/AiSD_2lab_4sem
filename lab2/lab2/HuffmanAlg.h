@@ -41,7 +41,7 @@ public:
 	HuffmanAlg(char* _str){
 		if (_str == NULL)
 		{
-			throw "null argument";
+			throw exception("null argument");
 		}
 		codeLetter = RedBlackTree<char, strArr*>(); //map for saving symbols and codes
 		str = _str; //original string to code
@@ -208,6 +208,15 @@ public:
 		}
 		return decodeStr;
 	}	
+	~HuffmanAlg() {
+		//Node* root;
+		/*struct strArr
+		{
+			bool* str = NULL;
+			int size = 0;
+		};*/
+	}
+
 };
 
 #include "PriorityQueue.cpp"

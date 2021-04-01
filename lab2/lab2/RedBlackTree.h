@@ -3,7 +3,7 @@
 #include <iostream>
 using namespace std;
 
-template <typename K, typename V> //type for key and value
+template <class K, class V> //type for key and value
 class RedBlackTree
 {
 private:
